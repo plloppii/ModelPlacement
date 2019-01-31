@@ -24,9 +24,3 @@ Models are orieted in the optimal printing orientation
 
 Directions for Compliation:
 
-
-ESTIMATE OF # OF HOURS SPENT ON THIS ASSIGNMENT:  < 25-35 hours >
-
-
-
-DESCRIPTION OF YOUR CREATIVE STATISTIC:
