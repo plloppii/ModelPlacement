@@ -22,6 +22,10 @@ Design Notes:
 -The tree structure would be created based on keeping the total model width and length as square as possible.
 
 
+Incomplete Tasks:
+-Finish implementation of tree data structure
+-Turning the algorithm into a templated class. 
+
 Assumptions:
 Binary STL file used
 Models are orieted in the optimal printing orientation
