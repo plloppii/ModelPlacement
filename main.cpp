@@ -3,17 +3,16 @@
 #include <vector>
 #include <cmath>
 #include <algorithm>
+#include "Buildplatform.h"
 
-#include "Model.h"
-
-
-std::vector<std::string> askformodels(){
-
+std::vector<std::string> askforfiles(){
 	std::vector<std::string> fnames;
-	unsigned number_of_files;
+	unsigned int number_of_files;
 	std::string filename;
 	std::cout<< "Input number of models to orient: ";
 	std::cin >> number_of_files;
+
+	//Error checking if input is not a unsigned int. 
 	while(!std::cin){
 		std::cin.clear();
 		std::cin.ignore(256, '\n');
@@ -33,17 +32,10 @@ std::vector<std::string> askformodels(){
 	return fnames;
 }
 
-
-int main(int argc, char* argv[]){
-
-	//Ask for Models
-	std::vector<std::string> filenames = askformodels();
-
+//First traverse through the model names and determine if they are valid. 
+//Code checking if the models are Binary or ACSII Formatted will exist here if implemented.
+bool validate_files(std::vector<std::string> &filenames){
 	std::ifstream in_str;
-	std::vector<Model> models;
-
-	//First traverse through the model names and determine if they are valid. 
-	//Code checking if the models are Binary or ACSII Formatted will exist here if implemented.
 	for(unsigned i=0; i<filenames.size(); i++){
 		in_str.open(filenames[i].c_str(), std::ios::in| std::ios::binary);
 	 	while (!in_str.good()) {
@@ -56,15 +48,41 @@ int main(int argc, char* argv[]){
   		}
   		in_str.close();
 	}
+	return true;
+}
 
-	// for(unsigned i=0; i<filenames.size();i++){
-	// 	std::cout<< filenames[i]<<std::endl;
-	// }
 
+int main(int argc, char* argv[]){
+
+	//Ask for file names
+	std::vector<std::string> filenames = askforfiles();
+
+	//Validate that files can be opened
+	bool validfiles = validate_files(filenames); //Always returns true with current implementation 
+	if(!validfiles) { 
+		std::cout<<"Files cannot be read."<<std::endl; 
+		exit(1);
+	}
+
+	std::vector<Model> models;
 	for(unsigned i=0; i<filenames.size(); i++){
 		Model temp;
 		temp.extractdata(filenames[i]);
-		temp.printboundaries();
+		temp.printdimensions();
 		models.push_back(temp);
 	}
+	// std::vector<Model> mods;
+	// Model m1(70,170);
+	// mods.push_back(m1);
+	// Model m2(30,60);
+	// mods.push_back(m2);
+	// Model m3(25,63);
+	// mods.push_back(m3);
+	Buildplatform butt(200,200,models);
+	butt.createrootnode();
+
+
+
+
+
 }

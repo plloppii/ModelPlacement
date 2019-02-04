@@ -1,3 +1,6 @@
+#ifndef __Triangle__h_
+#define __Triangle__h_
+
 #include <iostream>
 #include <vector>
 #include "Point.h"
@@ -13,6 +16,6 @@ private:
 	Point v1;
 	Point v2;
 	Point v3;
-
-
 };
+
+#endif

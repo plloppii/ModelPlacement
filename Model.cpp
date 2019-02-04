@@ -22,10 +22,18 @@ Model::Model(float x1, float x2,float y1, float y2,float z1, float z2){
 	zmax = z2;
 }
 
+Model::Model(float w, float l){
+	width = w;
+	length = l;
+	area = width*length;
+}
+
 //input extracts header, data of triangles,and all of the triangles
 //sets boundary conditions for the model. 
 //adds triangles to the triangle vector
 void Model::extractdata(std::string inputfile){
+	name = inputfile;
+	std::cout<< name<<std::endl;
 
 	char buffer[80];
 	char numoftris[4];
@@ -44,10 +52,13 @@ void Model::extractdata(std::string inputfile){
   	unsigned int numberoftriangles = *((unsigned int*) numoftris);
 
   	for(unsigned i=0; i<numberoftriangles; i++){
-  		//std::cout<<"Triangle#"<<i+1<<std::endl;
   		Triangle tri = extracttriangles(in_str);
   		triangles.push_back(tri);
   	}
+  	width = xmax - xmin;
+  	length = ymax - ymin;
+  	height = zmax - zmin;
+  	area = width * length;
 }
 
 
@@ -85,12 +96,12 @@ Triangle Model::extracttriangles(std::ifstream& instring){
 	char dummy[2];
 	instring.read(dummy,2);
 
-	checkboundaries(vertex[1]);
+	//Check if new verticies create new max or min. 
+	checkboundaries(vertex[1]); 
 	checkboundaries(vertex[2]);
 	checkboundaries(vertex[3]);
 
 	Triangle newtri(vertex[0],vertex[1],vertex[2],vertex[3]);
-	//newtri.printtri();
 
 	return newtri;
 }
@@ -104,9 +115,15 @@ void Model::checkboundaries(const Point& v){
 	if(v.getz() > zmax) zmax = v.getz();
 }
 
-void Model::printboundaries() const{
+void Model::printboundaries(){
 	std::cout<< "xmin: "<< xmin << " xmax: "<<xmax<<std::endl;
 	std::cout<< "ymin: "<< ymin << " ymax: "<<ymax<<std::endl;
 	std::cout<< "zmin: "<< zmin << " zmax: "<<zmax<<std::endl;
+}
 
+void Model::printdimensions(){
+	std::cout<< "Width: "<<width<<std::endl;
+	std::cout<< "Length: "<<length<<std::endl;
+	std::cout<< "Height: "<<height<<std::endl;
+	std::cout<< "Area: "<<area<<std::endl;
 }
